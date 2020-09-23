@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.vecmath.Vector2d;
 
+import oripa.domain.bgimage.BGImage;
 import oripa.domain.cptool.Painter;
 import oripa.domain.creasepattern.CreasePatternInterface;
 import oripa.value.OriLine;
@@ -17,6 +18,8 @@ class PaintContext implements PaintContextInterface {
 
 	private CreasePatternInterface creasePattern;
 	private final CreasePatternUndoerInterface undoer = new CreasePatternUndoer(this);
+
+	private BGImage bgimage;
 
 	private final LinkedList<Vector2d> pickedVertices = new LinkedList<>();
 
@@ -477,6 +480,14 @@ class PaintContext implements PaintContextInterface {
 	@Override
 	public CreasePatternInterface getCreasePattern() {
 		return creasePattern;
+	}
+
+	public void setBGImage(final BGImage bg) {
+		bgimage = bg;
+	}
+
+	public BGImage getBGImage() {
+		return bgimage;
 	}
 
 	/*

@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import oripa.domain.cutmodel.CutModelOutlinesHolder;
+import oripa.domain.paint.BGImageDrawer;
 import oripa.domain.paint.CreasePatternGraphicDrawer;
 import oripa.domain.paint.EditMode;
 import oripa.domain.paint.GraphicMouseActionInterface;
@@ -76,6 +77,7 @@ public class PainterScreen extends JPanel
 	private final AffineTransform affineTransform = new AffineTransform();
 
 	private final CreasePatternGraphicDrawer drawer = new CreasePatternGraphicDrawer();
+	private final BGImageDrawer bgDrawer = new BGImageDrawer();
 
 	private final MouseActionHolder mouseActionHolder;
 
@@ -215,6 +217,11 @@ public class PainterScreen extends JPanel
 		return bufferg;
 	}
 
+	public void drawBackgroundImage(final Graphics2D bufferG2D) {
+		bgDrawer.draw(bufferG2D, paintContext,
+				mouseActionHolder.getMouseAction().getEditMode() == EditMode.VERTEX);
+	}
+
 	// Scaling relative to the center of the screen
 	@Override
 	public void paintComponent(final Graphics g) {
@@ -223,6 +230,8 @@ public class PainterScreen extends JPanel
 		Graphics2D bufferG2D = updateBufferImage();
 		bufferG2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+
+		drawBackgroundImage(bufferG2D);
 
 		drawer.draw(bufferG2D, paintContext,
 				mouseActionHolder.getMouseAction().getEditMode() == EditMode.VERTEX);

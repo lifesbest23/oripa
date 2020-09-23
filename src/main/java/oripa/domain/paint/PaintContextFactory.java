@@ -1,5 +1,6 @@
 package oripa.domain.paint;
 
+import oripa.domain.bgimage.BGImage;
 import oripa.domain.creasepattern.CreasePatternFactory;
 import oripa.resource.Constants;
 
@@ -9,6 +10,7 @@ public class PaintContextFactory {
 		CreasePatternFactory patternFactory = new CreasePatternFactory();
 
 		PaintContextInterface context = new PaintContext();
+		context.setBGImage(new BGImage());
 		context.setCreasePattern(
 				patternFactory.createCreasePattern(
 						Constants.DEFAULT_PAPER_SIZE));

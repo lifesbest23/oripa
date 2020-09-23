@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.vecmath.Vector2d;
 
+import oripa.domain.bgimage.BGImage;
 import oripa.domain.cptool.Painter;
 import oripa.value.OriLine;
 
@@ -16,6 +17,10 @@ import oripa.value.OriLine;
  *
  */
 public interface PaintContextInterface extends CreasePatternHolder {
+
+	public abstract void setBGImage(final BGImage bg);
+
+	public abstract BGImage getBGImage();
 
 	// =================================================================================
 	// Mouse position
