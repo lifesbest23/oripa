@@ -19,7 +19,7 @@ class PaintContext implements PaintContextInterface {
 	private CreasePatternInterface creasePattern;
 	private final CreasePatternUndoerInterface undoer = new CreasePatternUndoer(this);
 
-	private BGImage bgimage;
+	private final BGImage bgimage = new BGImage();
 
 	private final LinkedList<Vector2d> pickedVertices = new LinkedList<>();
 
@@ -482,10 +482,12 @@ class PaintContext implements PaintContextInterface {
 		return creasePattern;
 	}
 
-	public void setBGImage(final BGImage bg) {
-		bgimage = bg;
+	@Override
+	public void setBGImage(final String newPath) {
+		bgimage.setImage(newPath);
 	}
 
+	@Override
 	public BGImage getBGImage() {
 		return bgimage;
 	}

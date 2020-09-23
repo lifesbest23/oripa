@@ -37,7 +37,7 @@ public class BGImage {
 
 	private BufferedImage image = null;
 
-	private String path = "";
+	private String path = null;
 
 	public int offsetX = 0;
 	public int offsetY = 0;
@@ -69,7 +69,7 @@ public class BGImage {
 		try {
 			image = ImageIO.read(new File(path));
 		} catch (IOException e) {
-			logger.error("ERROR BGIMAGE");
+			logger.error("ERROR BGIMAGE setImage");
 			return;
 		}
 		logger.info(

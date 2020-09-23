@@ -27,7 +27,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.stream.IntStream;
@@ -175,8 +174,6 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 
 	private final Doc document = new Doc();
 
-	private BufferedImage bgImage = null;
-
 	public MainFrame() {
 		logger.info("frame construction starts.");
 
@@ -301,9 +298,9 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 				InputEvent.CTRL_DOWN_MASK));
 
 		menuItemOpenImage.addActionListener(e -> {
-			String path = openImageFile(null);
+			String path = openImageFile(paintContext.getBGImage().getImagePath());
+			paintContext.setBGImage(path);
 			screenUpdater.updateScreen();
-			logger.debug("load background image " + path);
 		});
 		menuItemOpenImage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
 				InputEvent.CTRL_DOWN_MASK));
@@ -615,24 +612,21 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 	}
 
 	/**
-	 * if filePath is null, this method opens a dialog to select a background
-	 * image.
+	 * opens a dialog to select a background image, image.
 	 *
 	 * @param filePath
 	 */
 	public String openImageFile(final String filePath) {
 		ImageDAO dao = new ImageDAO();
+		String newImage = null;
 
 		try {
-			// we can't substitute a loaded object because
-			// the document object is referred by screen and UI panel as a
-			// Holder.
 			if (filePath != null) {
-				// document.set(dao.load(filePath));
+				newImage = dao.loadUsingGUI(
+						filePath, this);
 			} else {
-				bgImage = dao.loadUsingGUI(
-						fileHistory.getLastPath(), this);
-				logger.debug("open ImageBuffer file");
+				newImage = dao.loadUsingGUI(
+						filePath, this);
 			}
 		} catch (FileVersionError | WrongDataFormatException | IOException e) {
 			logger.error("failed to load", e);
@@ -640,7 +634,7 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 		} catch (FileChooserCanceledException cancel) {
 			return null;
 		}
-		return "path to image";
+		return newImage;
 	}
 
 	/**

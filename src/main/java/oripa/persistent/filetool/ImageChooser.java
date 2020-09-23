@@ -39,7 +39,7 @@ public class ImageChooser<BufferedImage> extends JFileChooser {
 		this.setSelectedFile(file);
 	}
 
-	public BufferedImage loadImage(final Component parent) throws FileChooserCanceledException {
+	public String loadImage(final Component parent) throws FileChooserCanceledException {
 		if (JFileChooser.APPROVE_OPTION != this.showOpenDialog(parent)) {
 			throw new FileChooserCanceledException();
 		}
@@ -47,15 +47,17 @@ public class ImageChooser<BufferedImage> extends JFileChooser {
 		try {
 			String imagePath = this.getSelectedFile().getPath();
 
-			return (BufferedImage) ImageIO.read(new File(imagePath));
+			if (ImageIO.read(new File(imagePath)) != null) {
+				return imagePath;
+			}
 
 		} catch (Exception e) {
 			logger.error("error on loading a file", e);
 			JOptionPane.showMessageDialog(this, e.toString(),
 					ORIPA.res.getString("Error_FileLoadFailed"),
 					JOptionPane.ERROR_MESSAGE);
-			return null;
 		}
+		return null;
 	}
 
 }

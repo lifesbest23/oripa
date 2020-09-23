@@ -12,16 +12,6 @@ import oripa.persistent.filetool.WrongDataFormatException;
 
 public class ImageDAO {
 
-	public BufferedImage load(final String path, final Component parent)
-			throws FileVersionError, FileChooserCanceledException, IOException,
-			WrongDataFormatException {
-		FileChooserFactory<BufferedImage> factory = new FileChooserFactory<>();
-		ImageChooser<BufferedImage> imageChooser = factory.createImageChooser(
-				path);
-
-		return imageChooser.loadImage(parent);
-	}
-
 	/**
 	 *
 	 * @param doc
@@ -30,7 +20,7 @@ public class ImageDAO {
 	 * @param filters
 	 * @return chosen path
 	 */
-	public BufferedImage loadUsingGUI(final String homePath, final Component parent)
+	public String loadUsingGUI(final String homePath, final Component parent)
 			throws FileVersionError, FileChooserCanceledException, IOException,
 			WrongDataFormatException {
 		FileChooserFactory<BufferedImage> factory = new FileChooserFactory<>();

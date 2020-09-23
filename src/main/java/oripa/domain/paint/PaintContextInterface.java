@@ -18,7 +18,7 @@ import oripa.value.OriLine;
  */
 public interface PaintContextInterface extends CreasePatternHolder {
 
-	public abstract void setBGImage(final BGImage bg);
+	public abstract void setBGImage(final String url);
 
 	public abstract BGImage getBGImage();
 
