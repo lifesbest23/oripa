@@ -863,6 +863,9 @@ public class UIPanel extends JPanel {
 		case SELECT:
 			selectEditModeButton(editModePickLineButton);
 			break;
+		case MOVE_BG:
+			selectEditModeButton(editModeBGImage);
+			break;
 		default:
 			break;
 		}

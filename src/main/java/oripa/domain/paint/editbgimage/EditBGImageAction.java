@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import oripa.domain.bgimage.BGImage;
+import oripa.domain.paint.EditMode;
 import oripa.domain.paint.PaintContextInterface;
 import oripa.domain.paint.core.GraphicMouseAction;
 
@@ -38,6 +39,12 @@ public class EditBGImageAction extends GraphicMouseAction {
 
 	private Point2D.Double startPoint = null;
 	private Point2D.Double draggingPoint = null;
+
+	public EditBGImageAction() {
+		setEditMode(EditMode.MOVE_BG);
+
+		setActionState(new EditBGImage());
+	}
 
 	/*
 	 * (non Javadoc)

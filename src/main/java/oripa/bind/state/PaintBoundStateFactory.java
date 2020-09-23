@@ -32,6 +32,7 @@ import oripa.viewsetting.main.ChangeHint;
 import oripa.viewsetting.main.MainFrameSetting;
 import oripa.viewsetting.main.uipanel.ChangeOnAlterTypeButtonSelected;
 import oripa.viewsetting.main.uipanel.ChangeOnByValueButtonSelected;
+import oripa.viewsetting.main.uipanel.ChangeOnEditBGImageButtonSelected;
 import oripa.viewsetting.main.uipanel.ChangeOnOtherCommandButtonSelected;
 import oripa.viewsetting.main.uipanel.ChangeOnPaintInputButtonSelected;
 import oripa.viewsetting.main.uipanel.ChangeOnSelectButtonSelected;
@@ -180,7 +181,7 @@ public class PaintBoundStateFactory {
 			state = stateFactory.create(
 					mouseAction.getEditMode(), setterFactory.create(mouseAction), changeHint,
 					new ActionListener[] {
-							e -> (new ChangeOnOtherCommandButtonSelected(uiPanelSetting))
+							e -> (new ChangeOnEditBGImageButtonSelected(uiPanelSetting))
 									.changeViewSetting() });
 			break;
 

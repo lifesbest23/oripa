@@ -163,6 +163,10 @@ public class UIPanelSetting {
 		setSelectedMode(EditMode.VERTEX);
 	}
 
+	public void selectEditBGImageMode() {
+		setSelectedMode(EditMode.MOVE_BG);
+	}
+
 	public EditMode getSelectedMode() {
 		EditMode ret = selectedMode;
 
