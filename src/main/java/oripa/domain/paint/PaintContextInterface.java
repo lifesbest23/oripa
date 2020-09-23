@@ -18,10 +18,6 @@ import oripa.value.OriLine;
  */
 public interface PaintContextInterface extends CreasePatternHolder {
 
-	public abstract void setBGImage(final String url);
-
-	public abstract BGImage getBGImage();
-
 	// =================================================================================
 	// Mouse position
 	// =================================================================================
@@ -235,5 +231,18 @@ public interface PaintContextInterface extends CreasePatternHolder {
 	public abstract Painter getPainter();
 
 	public abstract CreasePatternUndoerInterface creasePatternUndo();
+
+	/**
+	 *
+	 * @param url
+	 *            image file path set the background image of the crease pattern
+	 */
+	public abstract void setBGImage(final String url);
+
+	/**
+	 *
+	 * @return current background image instance
+	 */
+	public abstract BGImage getBGImage();
 
 }

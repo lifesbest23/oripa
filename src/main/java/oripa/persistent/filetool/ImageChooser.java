@@ -14,7 +14,9 @@ import oripa.ORIPA;
 
 /**
  *
- * @author lifesbest23 choose background image dialog
+ * choose background image dialog
+ * 
+ * @author lifesbest23
  *
  */
 
