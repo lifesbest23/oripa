@@ -113,6 +113,8 @@ public class UIPanel extends JPanel {
 	private JRadioButton editModeLineTypeButton;
 	private JRadioButton editModeAddVertex;
 	private JRadioButton editModeDeleteVertex;
+
+	private JRadioButton editModeBGImage;
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Binding how to enter the line
 
@@ -223,6 +225,7 @@ public class UIPanel extends JPanel {
 		editModeGroup.add(editModeLineTypeButton);
 		editModeGroup.add(editModeAddVertex);
 		editModeGroup.add(editModeDeleteVertex);
+		editModeGroup.add(editModeBGImage);
 
 		JLabel l1 = new JLabel(
 				resources.getString(ResourceKey.LABEL,
@@ -289,6 +292,9 @@ public class UIPanel extends JPanel {
 				gridX, gridY++, gridWidth));
 
 		mainPanel.add(editModeDeleteVertex, createMainPanelGridBagConstraints(
+				gridX, gridY++, gridWidth));
+
+		mainPanel.add(editModeBGImage, createMainPanelGridBagConstraints(
 				gridX, gridY++, gridWidth));
 
 		JLabel label1 = new JLabel("Command (Alt + 1...9)");
@@ -417,6 +423,7 @@ public class UIPanel extends JPanel {
 		editModeDeleteLineButton.setMnemonic(KeyEvent.VK_D);
 		editModeLineTypeButton.setMnemonic(KeyEvent.VK_T);
 		editModeDeleteVertex.setMnemonic(KeyEvent.VK_L);
+		editModeBGImage.setMnemonic(KeyEvent.VK_B);
 		lineTypeAuxButton.setMnemonic(KeyEvent.VK_A);
 		lineTypeMountainButton.setMnemonic(KeyEvent.VK_M);
 		lineTypeValleyButton.setMnemonic(KeyEvent.VK_V);
@@ -483,6 +490,10 @@ public class UIPanel extends JPanel {
 
 		editModeDeleteVertex = (JRadioButton) buttonFactory.create(
 				this, JRadioButton.class, actionHolder, screenUpdater, StringID.DELETE_VERTEX_ID,
+				screenUpdater.getKeyListener());
+
+		editModeBGImage = (JRadioButton) buttonFactory.create(
+				this, JRadioButton.class, actionHolder, screenUpdater, StringID.EDIT_BGIMAGE_ID,
 				screenUpdater.getKeyListener());
 
 		// ---------------------------------------------------------------------------------------------------------------------------

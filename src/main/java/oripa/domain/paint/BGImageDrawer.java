@@ -21,7 +21,8 @@ package oripa.domain.paint;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
+
+import oripa.domain.bgimage.BGImage;
 
 /**
  * @author lucas
@@ -40,18 +41,18 @@ public class BGImageDrawer {
 			final Graphics2D g2d,
 			final PaintContextInterface context, final boolean forceShowingVertex) {
 
-		BufferedImage bg = context.getBGImage().getBuffer();
-		if (bg == null) {
+		BGImage bg = context.getBGImage();
+		if (bg.getImagePath() == null) {
 			return;
 		}
 
 		// resize and scale
 		int cpsize = (int) context.getCreasePattern().getPaperSize();
-		Image im = bg.getScaledInstance(cpsize, cpsize, Image.SCALE_SMOOTH);
+		Image im = bg.getBuffer().getScaledInstance(cpsize, cpsize, Image.SCALE_SMOOTH);
 
 		g2d.drawImage(im,
-				-(cpsize / 2),
-				-(cpsize / 2), null);
+				-(cpsize / 2) + bg.offsetX,
+				-(cpsize / 2) + bg.offsetY, null);
 
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(-1, -1, 2, 2);

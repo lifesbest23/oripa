@@ -17,6 +17,7 @@ import oripa.domain.paint.byvalue.LineByValueAction;
 import oripa.domain.paint.copypaste.SelectionOriginHolder;
 import oripa.domain.paint.deleteline.DeleteLineAction;
 import oripa.domain.paint.deletevertex.DeleteVertexAction;
+import oripa.domain.paint.editbgimage.EditBGImageAction;
 import oripa.domain.paint.line.TwoPointLineAction;
 import oripa.domain.paint.linetype.ChangeLineTypeAction;
 import oripa.domain.paint.mirror.MirrorCopyAction;
@@ -171,6 +172,15 @@ public class PaintBoundStateFactory {
 					changeHint,
 					new ActionListener[] {
 							e -> (new ChangeOnSelectButtonSelected(uiPanelSetting))
+									.changeViewSetting() });
+			break;
+
+		case StringID.EDIT_BGIMAGE_ID:
+			mouseAction = new EditBGImageAction();
+			state = stateFactory.create(
+					mouseAction.getEditMode(), setterFactory.create(mouseAction), changeHint,
+					new ActionListener[] {
+							e -> (new ChangeOnOtherCommandButtonSelected(uiPanelSetting))
 									.changeViewSetting() });
 			break;
 

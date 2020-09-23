@@ -1,5 +1,5 @@
 /**
- * ORIPA - Origami Pattern Editor 
+ * ORIPA - Origami Pattern Editor
  * Copyright (C) 2005-2009 Jun Mitani http://mitani.cs.tsukuba.ac.jp/
 
     This program is free software: you can redistribute it and/or modify
@@ -61,6 +61,7 @@ public class StringResource_en extends ListResourceBundle {
 			{ StringID.CHANGE_LINE_TYPE_ID, "Change Line Type" },
 			{ StringID.ADD_VERTEX_ID, "Add Vertex" },
 			{ StringID.DELETE_VERTEX_ID, "Delete Vertex" },
+			{ StringID.EDIT_BGIMAGE_ID, "Edit BG Image" },
 			{ StringID.UI.MEASURE_ID, "Measure" },
 			{ StringID.UI.FOLD_ID, "Fold..." },
 			{ StringID.UI.GRID_SIZE_CHANGE_ID, "Set" },
