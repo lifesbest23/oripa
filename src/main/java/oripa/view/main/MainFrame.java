@@ -27,6 +27,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.stream.IntStream;
@@ -61,6 +62,7 @@ import oripa.file.ImageResourceLoader;
 import oripa.persistent.doc.DocDAO;
 import oripa.persistent.doc.DocFilterSelector;
 import oripa.persistent.doc.FileTypeKey;
+import oripa.persistent.doc.ImageDAO;
 import oripa.persistent.filetool.AbstractSavingAction;
 import oripa.persistent.filetool.FileAccessSupportFilter;
 import oripa.persistent.filetool.FileChooserCanceledException;
@@ -97,6 +99,7 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 			ORIPA.res.getString("New"));
 	private final JMenuItem menuItemOpen = new JMenuItem(
 			ORIPA.res.getString("Open"));
+	private final JMenuItem menuItemOpenImage = new JMenuItem("Load Image");
 
 	private final JMenuItem menuItemSave = new JMenuItem(
 			ORIPA.res.getString("Save"));
@@ -171,6 +174,8 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 	private final DocFilterSelector filterSelector = new DocFilterSelector();
 
 	private final Doc document = new Doc();
+
+	private BufferedImage bgImage = null;
 
 	public MainFrame() {
 		logger.info("frame construction starts.");
@@ -293,6 +298,14 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 		});
 
 		menuItemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+				InputEvent.CTRL_DOWN_MASK));
+
+		menuItemOpenImage.addActionListener(e -> {
+			String path = openImageFile(null);
+			screenUpdater.updateScreen();
+			logger.debug("load background image " + path);
+		});
+		menuItemOpenImage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
 				InputEvent.CTRL_DOWN_MASK));
 
 		menuItemSave.addActionListener(e -> {
@@ -561,6 +574,7 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 
 		menuFile.add(menuItemClear);
 		menuFile.add(menuItemOpen);
+		menuFile.add(menuItemOpenImage);
 		menuFile.add(menuItemSave);
 		menuFile.add(menuItemSaveAs);
 		menuFile.add(menuItemSaveAsImage);
@@ -598,6 +612,35 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 		fileHistory.useFile(filePath);
 
 		buildFileMenu();
+	}
+
+	/**
+	 * if filePath is null, this method opens a dialog to select a background
+	 * image.
+	 *
+	 * @param filePath
+	 */
+	public String openImageFile(final String filePath) {
+		ImageDAO dao = new ImageDAO();
+
+		try {
+			// we can't substitute a loaded object because
+			// the document object is referred by screen and UI panel as a
+			// Holder.
+			if (filePath != null) {
+				// document.set(dao.load(filePath));
+			} else {
+				bgImage = dao.loadUsingGUI(
+						fileHistory.getLastPath(), this);
+				logger.debug("open ImageBuffer file");
+			}
+		} catch (FileVersionError | WrongDataFormatException | IOException e) {
+			logger.error("failed to load", e);
+			showErrorDialog("Failed to load the file", e);
+		} catch (FileChooserCanceledException cancel) {
+			return null;
+		}
+		return "path to image";
 	}
 
 	/**
