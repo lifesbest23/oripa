@@ -37,6 +37,8 @@ public class ChangeOnEditBGImageButtonSelected implements ChangeViewSetting {
 	@Override
 	public void changeViewSetting() {
 		setting.setByValuePanelVisible(false);
+		setting.setEditBGImagePanelVisible(true);
+		setting.setLineInputPanelVisible(false);
 
 		setting.setAlterLineTypePanelVisible(false);
 

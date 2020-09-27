@@ -10,6 +10,12 @@ import oripa.domain.paint.byvalue.ValueSetting;
 public class UIPanelSetting {
 	private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+	private boolean lineInputPanelVisible = true;
+	public static final String LINE_INPUT_PANEL_VISIBLE = "line-input-panel-visible";
+
+	private boolean editBGImagePanelVisible = false;
+	public static final String EDIT_BGIMAGE_PANEL_VISIBLE = "edit-bgimage-panel-visible";
+
 	private boolean byValuePanelVisible = false;
 	public static final String BY_VALUE_PANEL_VISIBLE = "by-value panel visible";
 
@@ -91,6 +97,14 @@ public class UIPanelSetting {
 		return alterLineTypePanelVisible;
 	}
 
+	public boolean isLineInputPanelVisible() {
+		return lineInputPanelVisible;
+	}
+
+	public boolean isEditBGImagePanelVisible() {
+		return editBGImagePanelVisible;
+	}
+
 	public boolean isMountainButtonEnabled() {
 		return mountainButtonEnabled;
 	}
@@ -113,6 +127,18 @@ public class UIPanelSetting {
 		var old = this.alterLineTypePanelVisible;
 		this.alterLineTypePanelVisible = alterLineTypePanelVisible;
 		support.firePropertyChange(ALTER_LINE_TYPE_PANEL_VISIBLE, old, alterLineTypePanelVisible);
+	}
+
+	public void setLineInputPanelVisible(final boolean lineInputPanelVisible) {
+		var old = this.lineInputPanelVisible;
+		this.lineInputPanelVisible = lineInputPanelVisible;
+		support.firePropertyChange(LINE_INPUT_PANEL_VISIBLE, old, lineInputPanelVisible);
+	}
+
+	public void setEditBGImagePanelVisible(final boolean editBGImagePanelVisible) {
+		var old = this.editBGImagePanelVisible;
+		this.editBGImagePanelVisible = editBGImagePanelVisible;
+		support.firePropertyChange(EDIT_BGIMAGE_PANEL_VISIBLE, old, editBGImagePanelVisible);
 	}
 
 	public void setMountainButtonEnabled(final boolean mountainButtonEnabled) {

@@ -17,6 +17,8 @@ public class ChangeOnSelectButtonSelected implements ChangeViewSetting {
 		setting.selectSelectMode();
 
 		setting.setByValuePanelVisible(false);
+		setting.setEditBGImagePanelVisible(false);
+		setting.setLineInputPanelVisible(false);
 
 		setting.setAlterLineTypePanelVisible(false);
 

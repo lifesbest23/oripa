@@ -197,7 +197,7 @@ public class MainFrame extends JFrame implements ComponentListener, WindowListen
 		}
 		logger.info("end constructing UI panel.");
 
-		JScrollPane uiScroll = new JScrollPane(uiPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane uiScroll = new JScrollPane(uiPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		uiScroll.setPreferredSize(new Dimension(uiPanel.getPreferredSize().width + 25,
 				uiPanel.getPreferredSize().height));
