@@ -18,7 +18,6 @@
 
 package oripa.view.main;
 
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -228,14 +227,11 @@ public class UIPanel extends JPanel {
 	private final JRadioButton lineTypeValleyButton = new JRadioButton(
 			resources.getString(ResourceKey.LABEL, StringID.UI.VALLEY_ID));
 
-	// byValueLengthPanel
-	private final JPanel byValueLengthPanel = new JPanel();
+	// byValuePanel for length and angle
+	private final JPanel byValuePanel = new JPanel();
 	private JFormattedTextField textFieldLength;
 	private final JButton buttonLength = new JButton(
 			resources.getString(ResourceKey.LABEL, StringID.UI.MEASURE_ID));
-
-	// byValueAnglePanel
-	private final JPanel byValueAnglePanel = new JPanel();
 	private JFormattedTextField textFieldAngle;
 	private final JButton buttonAngle = new JButton(
 			resources.getString(ResourceKey.LABEL, StringID.UI.MEASURE_ID));
@@ -299,9 +295,7 @@ public class UIPanel extends JPanel {
 
 		editModeSettings.add(settingsLabel);
 
-		editModeSettings.add(byValueLengthPanel);
-
-		editModeSettings.add(byValueAnglePanel);
+		editModeSettings.add(byValuePanel);
 
 		editModeSettings.add(editBGImagePanel);
 
@@ -375,6 +369,7 @@ public class UIPanel extends JPanel {
 
 	private JLabel makeLabel(final String text) {
 		JLabel label = new JLabel(text);
+		label.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		return label;
 	}
 
@@ -606,11 +601,6 @@ public class UIPanel extends JPanel {
 		JLabel subLabel2 = new JLabel(
 				resources.getString(ResourceKey.LABEL, StringID.UI.ANGLE_ID));
 
-		// subPanel1.setVisible(true);
-		// subPanel2.setVisible(true);
-		byValueLengthPanel.setVisible(false);
-		byValueAnglePanel.setVisible(false);
-
 		NumberFormat doubleValueFormat = NumberFormat
 				.getNumberInstance(Locale.US);
 		doubleValueFormat.setMinimumFractionDigits(6);
@@ -626,14 +616,14 @@ public class UIPanel extends JPanel {
 		textFieldLength.setHorizontalAlignment(JTextField.RIGHT);
 		textFieldAngle.setHorizontalAlignment(JTextField.RIGHT);
 
-		byValueLengthPanel.setLayout(new FlowLayout());
-		byValueAnglePanel.setLayout(new FlowLayout());
-		byValueLengthPanel.add(subLabel1);
-		byValueLengthPanel.add(textFieldLength);
-		byValueLengthPanel.add(buttonLength);
-		byValueAnglePanel.add(subLabel2);
-		byValueAnglePanel.add(textFieldAngle);
-		byValueAnglePanel.add(buttonAngle);
+		byValuePanel.setLayout(new GridBagLayout());
+
+		byValuePanel.add(subLabel1, createGridBagConstraints(0, 0, 1));
+		byValuePanel.add(textFieldLength, createGridBagConstraints(1, 0, 1));
+		byValuePanel.add(buttonLength, createGridBagConstraints(2, 0, 1));
+		byValuePanel.add(subLabel2, createGridBagConstraints(0, 1, 1));
+		byValuePanel.add(textFieldAngle, createGridBagConstraints(1, 1, 1));
+		byValuePanel.add(buttonAngle, createGridBagConstraints(2, 1, 1));
 	}
 
 	private void createGridPanel() {
@@ -1021,8 +1011,7 @@ public class UIPanel extends JPanel {
 
 		setting.addPropertyChangeListener(
 				UIPanelSetting.BY_VALUE_PANEL_VISIBLE, e -> {
-					byValueLengthPanel.setVisible((boolean) e.getNewValue());
-					byValueAnglePanel.setVisible((boolean) e.getNewValue());
+					byValuePanel.setVisible((boolean) e.getNewValue());
 				});
 
 		setting.addPropertyChangeListener(
