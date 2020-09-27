@@ -290,16 +290,22 @@ public class UIPanel extends JPanel {
 		createButtonsPanel();
 
 		// editMode settings panel
-		editModeSettings.setLayout(new GridBagLayout());
+		editModeSettings.setLayout(new BoxLayout(editModeSettings, BoxLayout.PAGE_AXIS));
 		editModeSettings.setBorder(new EtchedBorder(BevelBorder.RAISED,
 				getBackground().darker(), getBackground().brighter()));
 
 		JLabel settingsLabel = new JLabel("Settings");
-		editModeSettings.add(settingsLabel, createGridBagConstraints(0, 0, 1));
+		settingsLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-		editModeSettings.add(byValueLengthPanel, createGridBagConstraints(0, 1, 1));
-		editModeSettings.add(byValueAnglePanel, createGridBagConstraints(0, 2, 1));
+		editModeSettings.add(settingsLabel);
 
+		editModeSettings.add(byValueLengthPanel);
+
+		editModeSettings.add(byValueAnglePanel);
+
+		editModeSettings.add(editBGImagePanel);
+
+		// add them to this panel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		add(mainPanel);
 		add(editModeSettings);
@@ -365,6 +371,11 @@ public class UIPanel extends JPanel {
 		field.setHorizontalAlignment(JTextField.LEFT);
 
 		return field;
+	}
+
+	private JLabel makeLabel(final String text) {
+		JLabel label = new JLabel(text);
+		return label;
 	}
 
 	private void constructButtons(final StateManager stateManager,
@@ -556,26 +567,35 @@ public class UIPanel extends JPanel {
 
 		// put it all together
 		editBGImagePanel.setLayout(new GridBagLayout());
-		editBGImagePanel.setVisible(false);
-		int n = 0;
-		int gridX = 1;
+		// editBGImagePanel.setVisible(false);
+		int gridX = 0;
 		int gridY = 0;
-		int gridWidth = 2;
+		int gridWidth = 1;
 
-		editBGImagePanel.add(showBGImage, createMainPanelGridBagConstraints(
-				gridX, gridY++, gridWidth));
-		editBGImagePanel.add(textFieldBGposX, createMainPanelGridBagConstraints(
-				gridX, gridY++, gridWidth));
-		editBGImagePanel.add(textFieldBGposY, createMainPanelGridBagConstraints(
-				gridX, gridY++, gridWidth));
-		editBGImagePanel.add(textFieldBGscaleX, createMainPanelGridBagConstraints(
-				gridX, gridY++, gridWidth));
-		editBGImagePanel.add(textFieldBGscaleY, createMainPanelGridBagConstraints(
-				gridX, gridY++, gridWidth));
-		editBGImagePanel.add(textFieldBGrotation, createMainPanelGridBagConstraints(
-				gridX, gridY++, gridWidth));
-		editBGImagePanel.add(setBGsettings, createMainPanelGridBagConstraints(
-				gridX, gridY++, gridWidth));
+		editBGImagePanel.add(showBGImage, createGridBagConstraints(
+				gridX, gridY++, 2));
+		editBGImagePanel.add(makeLabel("posX:"), createGridBagConstraints(
+				gridX, gridY, gridWidth));
+		editBGImagePanel.add(textFieldBGposX, createGridBagConstraints(
+				gridX + 1, gridY++, gridWidth));
+		editBGImagePanel.add(makeLabel("posY:"), createGridBagConstraints(
+				gridX, gridY, gridWidth));
+		editBGImagePanel.add(textFieldBGposY, createGridBagConstraints(
+				gridX + 1, gridY++, gridWidth));
+		editBGImagePanel.add(makeLabel("scaleX:"), createGridBagConstraints(
+				gridX, gridY, gridWidth));
+		editBGImagePanel.add(textFieldBGscaleX, createGridBagConstraints(
+				gridX + 1, gridY++, gridWidth));
+		editBGImagePanel.add(makeLabel("scaleY:"), createGridBagConstraints(
+				gridX, gridY, gridWidth));
+		editBGImagePanel.add(textFieldBGscaleY, createGridBagConstraints(
+				gridX + 1, gridY++, gridWidth));
+		editBGImagePanel.add(makeLabel("tilt:"), createGridBagConstraints(
+				gridX, gridY, gridWidth));
+		editBGImagePanel.add(textFieldBGrotation, createGridBagConstraints(
+				gridX + 1, gridY++, gridWidth));
+		editBGImagePanel.add(setBGsettings, createGridBagConstraints(
+				gridX, gridY++, 2));
 
 	}
 
@@ -617,10 +637,6 @@ public class UIPanel extends JPanel {
 	}
 
 	private void createGridPanel() {
-		// ------------------------------------
-		// For the grid panel
-		// ------------------------------------
-		JPanel divideNumSpecPanel = new JPanel();
 		JLabel gridLabel1 = new JLabel(
 				resources.getString(ResourceKey.LABEL,
 						StringID.UI.GRID_DIVIDE_NUM_ID));
@@ -630,26 +646,43 @@ public class UIPanel extends JPanel {
 		textFieldGrid.setValue(Integer.valueOf(paintContext.getGridDivNum()));
 		textFieldGrid.setHorizontalAlignment(JTextField.RIGHT);
 
-		divideNumSpecPanel.add(gridLabel1);
-		divideNumSpecPanel.add(textFieldGrid);
-		divideNumSpecPanel.add(gridChangeButton);
-
-		int n = 0;
-		JPanel gridButtonsPanel = new JPanel();
-		gridButtonsPanel.add(gridSmallButton);
-		n++;
-		gridButtonsPanel.add(gridLargeButton);
-		n++;
-
-		gridPanel.add(dispGridCheckBox);
-		n++;
-		gridPanel.add(divideNumSpecPanel);
-		n++;
-		gridPanel.add(gridButtonsPanel);
-		n++;
-		gridPanel.setLayout(new GridLayout(n, 1, 10, 2));
+		gridPanel.setLayout(new GridBagLayout());
 		gridPanel.setBorder(new EtchedBorder(BevelBorder.RAISED,
 				getBackground().darker(), getBackground().brighter()));
+
+		GridBagConstraints c = createGridBagConstraints(0, 0, 4);
+		c.insets = new Insets(0, 0, 0, 0);
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		gridPanel.add(dispGridCheckBox, c);
+
+		// c.fill = GridBagConstraints.NONE;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		gridPanel.add(gridLabel1, c);
+		c.gridx += 1;
+		gridPanel.add(textFieldGrid, c);
+		c.gridx += 1;
+		gridPanel.add(gridChangeButton, c);
+
+		c.gridy = 2;
+		c.gridx = 0;
+		c.gridwidth = 2;
+		gridPanel.add(gridSmallButton, c);
+		c.gridx = 2;
+		gridPanel.add(gridLargeButton, c);
+
+		/*
+		 * gridPanel.add(dispGridCheckBox, createGridBagConstraints(0, 0, 3));
+		 *
+		 * gridPanel.add(gridLabel1, createGridBagConstraints(0, 1, 1));
+		 * gridPanel.add(textFieldGrid, createGridBagConstraints(1, 1, 1));
+		 * gridPanel.add(gridChangeButton, createGridBagConstraints(2, 1, 1));
+		 *
+		 * gridPanel.add(gridSmallButton, createGridBagConstraints(0, 2, 1));
+		 * gridPanel.add(gridLargeButton, createGridBagConstraints(1, 2, 1));
+		 */
+
 	}
 
 	private void createButtonsPanel() {
@@ -722,13 +755,17 @@ public class UIPanel extends JPanel {
 		var gridBagConstraints = new GridBagConstraints();
 
 		// padding
-		gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+		// gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+		// gridBagConstraints.ipadx = 20;
+		// gridBagConstraints.ipady = 5;
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.gridx = gridX;
 		gridBagConstraints.gridy = gridY;
 		// number of columns spanned
 		gridBagConstraints.gridwidth = gridWidth;
+
 		// left anchor
-		gridBagConstraints.anchor = GridBagConstraints.LINE_START;
+		gridBagConstraints.anchor = GridBagConstraints.CENTER;
 
 		return gridBagConstraints;
 	}
