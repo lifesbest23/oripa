@@ -104,17 +104,66 @@ public class UIPanel extends JPanel {
 	private final PaintContextInterface paintContext;
 
 	private boolean fullEstimation = true;
+
+//	 * mainPanel
+//	 * . input line button
+//	 * * lineTypePanel
+//	 * 	 . mountain button
+//	 *   . valley button
+//	 *   . aux button
+//	 * -------------
+//	 * . select line button
+//	 * . delete line button
+//	 * . change line type
+//	 * * alterLineTypePanel
+//	 *   alter_line_combo_from/to
+//	 * -------------
+//	 * . add vertex button
+//	 * . delete vertex button
+//	 * . edit bgimage button
+//	 * * editBGImagePanel
+//	 *   checkbox display image
+//	 *   button selectImage
+//	 *   offsetX input
+//	 *   offsetY input
+//	 *   scaleX input
+//	 *   scaleY input
+//	 *   tilt input
+//	 *   rotate45deg button
+//	 * --------------
+//	 * 	 ... all the commands with images
+//	 * ---------
+//	 * * byValueLengthPanel
+//	 * 	 textFieldLength
+//	 *   buttonLength
+//	 * * byValueAnglePanel
+//	 *   textFieldAngle
+//	 *   buttonAngle
+//	 * * gridPanel
+//	 *   show grid checkbox
+//	 *   and so on
+//	 * o MV checkbox
+//	 * o aux checkbox
+//	 * o show vertices checkbox
+//	 * checkWindowButton
+//	 * FoldWindowButton
+//	 * o fullEstimationCheckbox
+//	 *
+
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Binding edit mode
 
+	/**
+	 *
+	 */
 	private JRadioButton editModeInputLineButton;
 	private JRadioButton editModePickLineButton;
 	private JRadioButton editModeDeleteLineButton;
 	private JRadioButton editModeLineTypeButton;
 	private JRadioButton editModeAddVertex;
 	private JRadioButton editModeDeleteVertex;
-
 	private JRadioButton editModeBGImage;
+
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Binding how to enter the line
 
@@ -167,6 +216,8 @@ public class UIPanel extends JPanel {
 	private final JPanel byValueAnglePanel = new JPanel();
 	private final JPanel gridPanel = new JPanel();
 	private final JPanel lineTypePanel = new JPanel();
+	private final JPanel editBGImagePanel = new JPanel();
+
 	// AlterLineType
 	private final JPanel alterLineTypePanel = new JPanel();
 

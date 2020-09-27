@@ -41,7 +41,7 @@ public class EditBGImageAction extends GraphicMouseAction {
 	private Point2D.Double draggingPoint = null;
 
 	public EditBGImageAction() {
-		setEditMode(EditMode.MOVE_BG);
+		setEditMode(EditMode.INPUT);
 
 		setActionState(new EditBGImage());
 	}

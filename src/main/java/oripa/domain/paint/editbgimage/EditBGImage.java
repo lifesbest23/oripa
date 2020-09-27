@@ -24,7 +24,7 @@ import oripa.domain.paint.PaintContextInterface;
 import oripa.domain.paint.core.AbstractActionState;
 
 /**
- * @author lucas
+ * @author lifesbest23
  *
  */
 public class EditBGImage extends AbstractActionState {
