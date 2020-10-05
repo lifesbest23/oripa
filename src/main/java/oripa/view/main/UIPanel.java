@@ -107,53 +107,14 @@ public class UIPanel extends JPanel {
 
 	private boolean fullEstimation = true;
 
-//	 * mainPanel
-//	 * . input line button
-//	 * * lineTypePanel
-//	 * 	 . mountain button
-//	 *   . valley button
-//	 *   . aux button
-//	 * -------------
-//	 * . select line button
-//	 * . delete line button
-//	 * . change line type
-//	 * * alterLineTypePanel
-//	 *   alter_line_combo_from/to
-//	 * -------------
-//	 * . add vertex button
-//	 * . delete vertex button
-//	 * . edit bgimage button
-//	 * * editBGImagePanel
-//	 *   checkbox display image
-//	 *   button selectImage
-//	 *   offsetX input
-//	 *   offsetY input
-//	 *   scaleX input
-//	 *   scaleY input
-//	 *   tilt input
-//	 *   rotate45deg button
-//	 * --------------
-//	 * 	 ... all the commands with images
-//	 * ---------
-//	 * * byValueLengthPanel
-//	 * 	 textFieldLength
-//	 *   buttonLength
-//	 * * byValueAnglePanel
-//	 *   textFieldAngle
-//	 *   buttonAngle
-//	 * * gridPanel
-//	 *   show grid checkbox
-//	 *   and so on
-//	 * o MV checkbox
-//	 * o aux checkbox
-//	 * o show vertices checkbox
-//	 * checkWindowButton
-//	 * FoldWindowButton
-//	 * o fullEstimationCheckbox
-//	 *
+	// contains all the different Panels changing dependent on what edit mode
+	// selected
+	private final JPanel editModeSettingsPanel = new JPanel();
+	private final JPanel generalSettingsPanel = new JPanel();
+
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Panels to be used
-	private final JPanel mainPanel = new JPanel();
+	// main Tool selection Panel
+	private final JPanel mainToolPanel = new JPanel();
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Binding edit mode
@@ -166,9 +127,6 @@ public class UIPanel extends JPanel {
 	private JRadioButton editModeAddVertex;
 	private JRadioButton editModeDeleteVertex;
 	private JRadioButton editModeBGImage;
-
-	// ---------------------------------------------------------------------------------------------------------------------------
-	// Panel Components
 
 	// Insert Line Tools Panel
 	private final JPanel lineInputPanel = new JPanel();
@@ -195,6 +153,7 @@ public class UIPanel extends JPanel {
 
 	// ActionButtons Panel
 	private final JPanel buttonsPanel = new JPanel();
+
 	private final JButton buildButton = new JButton(
 			resources.getString(ResourceKey.LABEL, StringID.UI.FOLD_ID));
 	private final JButton buttonCheckWindow = new JButton(
@@ -214,11 +173,6 @@ public class UIPanel extends JPanel {
 			resources.getString(ResourceKey.LABEL,
 					StringID.UI.FULL_ESTIMATION_ID),
 			false);
-
-	// contains all the different Panels changing dependant on what edit mode
-	// selected
-	private final JPanel editModeSettingsPanel = new JPanel();
-	private final JPanel generalSettingsPanel = new JPanel();
 
 	// editBGImagePanel
 	private final JPanel editBGImagePanel = new JPanel();
@@ -315,7 +269,7 @@ public class UIPanel extends JPanel {
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.fill = GridBagConstraints.NONE;
 		c.weighty = 0;
-		add(mainPanel, c);
+		add(mainToolPanel, c);
 
 		c.gridy++;
 		c.weighty = 1.0;
@@ -503,33 +457,33 @@ public class UIPanel extends JPanel {
 		lineInputGroup.add(lineInputByValueButton);
 		lineInputGroup.add(lineInputPBisectorButton);
 
-		mainPanel.setBorder(new EmptyBorder(1, 1, 1, 1));
-		mainPanel.setLayout(new GridBagLayout());
+		mainToolPanel.setBorder(new EmptyBorder(1, 1, 1, 1));
+		mainToolPanel.setLayout(new GridBagLayout());
 
 		int n = 0;
 		int gridX = 0;
 		int gridY = 0;
 		int gridWidth = 1;
 
-		mainPanel.add(editModeInputLineButton, createMainPanelGridBagConstraints(
+		mainToolPanel.add(editModeInputLineButton, createMainPanelGridBagConstraints(
 				gridX, gridY++, gridWidth));
 
-		mainPanel.add(editModePickLineButton, createMainPanelGridBagConstraints(
+		mainToolPanel.add(editModePickLineButton, createMainPanelGridBagConstraints(
 				gridX, gridY++, gridWidth));
 
-		mainPanel.add(editModeDeleteLineButton, createMainPanelGridBagConstraints(
+		mainToolPanel.add(editModeDeleteLineButton, createMainPanelGridBagConstraints(
 				gridX, gridY++, gridWidth));
 
-		mainPanel.add(editModeLineTypeButton, createMainPanelGridBagConstraints(
+		mainToolPanel.add(editModeLineTypeButton, createMainPanelGridBagConstraints(
 				gridX, gridY++, gridWidth));
 
-		mainPanel.add(editModeAddVertex, createMainPanelGridBagConstraints(
+		mainToolPanel.add(editModeAddVertex, createMainPanelGridBagConstraints(
 				gridX, gridY++, gridWidth));
 
-		mainPanel.add(editModeDeleteVertex, createMainPanelGridBagConstraints(
+		mainToolPanel.add(editModeDeleteVertex, createMainPanelGridBagConstraints(
 				gridX, gridY++, gridWidth));
 
-		mainPanel.add(editModeBGImage, createMainPanelGridBagConstraints(
+		mainToolPanel.add(editModeBGImage, createMainPanelGridBagConstraints(
 				gridX, gridY++, gridWidth));
 	}
 
