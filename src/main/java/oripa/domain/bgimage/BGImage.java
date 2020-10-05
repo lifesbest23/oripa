@@ -39,6 +39,9 @@ public class BGImage {
 
 	private boolean changedValue = false;
 	public static String CHANGED_BGIMAGE = "changed bg image";
+	public static String CHANGED_BGIMAGE_SCALE = "changed bg image scale";
+	public static String CHANGED_BGIMAGE_POSITION = "changed bg image position";
+	public static String CHANGED_BGIMAGE_ROTATION = "changed bg image rotation";
 
 	private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -75,21 +78,21 @@ public class BGImage {
 		offsetX += deltaX;
 		offsetY += deltaY;
 
-		support.firePropertyChange(CHANGED_BGIMAGE, offsetX, deltaX);
+		support.firePropertyChange(CHANGED_BGIMAGE_POSITION, offsetX, deltaX);
 	}
 
 	public void zoomImage(final int scale) {
 		int old = scaleX;
 		scaleX += scale;
 		scaleY += scale;
-		support.firePropertyChange(CHANGED_BGIMAGE, old, scaleX);
+		support.firePropertyChange(CHANGED_BGIMAGE_SCALE, old, scaleX);
 		setValueChanged(true);
 	}
 
 	public void rotateImage(final int delta) {
 		int old = rotation;
 		rotation += delta;
-		support.firePropertyChange(CHANGED_BGIMAGE, old, rotation);
+		support.firePropertyChange(CHANGED_BGIMAGE_ROTATION, old, rotation);
 		setValueChanged(true);
 	}
 

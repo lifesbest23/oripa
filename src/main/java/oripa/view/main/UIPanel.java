@@ -179,6 +179,8 @@ public class UIPanel extends JPanel {
 	private final JCheckBox showBGImage = new JCheckBox("Disply BG Image", true);
 	private JFormattedTextField textFieldBGposX;
 	private JFormattedTextField textFieldBGposY;
+	private JFormattedTextField textFieldBGwidth;
+	private JFormattedTextField textFieldBGheight;
 	private JFormattedTextField textFieldBGscaleX;
 	private JFormattedTextField textFieldBGscaleY;
 	private JFormattedTextField textFieldBGrotation;
@@ -574,6 +576,8 @@ public class UIPanel extends JPanel {
 		// editBGImagePanel
 		textFieldBGposX = createNumTextField();
 		textFieldBGposY = createNumTextField();
+		textFieldBGwidth = createNumTextField();
+		textFieldBGheight = createNumTextField();
 		textFieldBGscaleX = createNumTextField();
 		textFieldBGscaleY = createNumTextField();
 		textFieldBGrotation = createNumTextField();
@@ -588,32 +592,42 @@ public class UIPanel extends JPanel {
 		// editBGImagePanel.setVisible(false);
 		int gridX = 0;
 		int gridY = 0;
-		int gridWidth = 1;
+		int gridWidth = 3;
 
 		editBGImagePanel.add(showBGImage, createGridBagConstraints(
-				gridX, gridY++, 2));
+				gridX, gridY++, gridWidth));
+
 		editBGImagePanel.add(new JLabel("posX:"), createGridBagConstraints(
-				gridX, gridY, gridWidth));
+				gridX, gridY, 1));
 		editBGImagePanel.add(textFieldBGposX, createGridBagConstraints(
-				gridX + 1, gridY++, gridWidth));
+				gridX + 1, gridY++, 2));
+
 		editBGImagePanel.add(new JLabel("posY:"), createGridBagConstraints(
-				gridX, gridY, gridWidth));
+				gridX, gridY, 1));
 		editBGImagePanel.add(textFieldBGposY, createGridBagConstraints(
-				gridX + 1, gridY++, gridWidth));
+				gridX + 1, gridY++, 2));
+
 		editBGImagePanel.add(new JLabel("scaleX:"), createGridBagConstraints(
-				gridX, gridY, gridWidth));
+				gridX, gridY, 1));
+		editBGImagePanel.add(textFieldBGwidth, createGridBagConstraints(
+				gridX + 1, gridY, 1));
 		editBGImagePanel.add(textFieldBGscaleX, createGridBagConstraints(
-				gridX + 1, gridY++, gridWidth));
+				gridX + 2, gridY++, 1));
+
 		editBGImagePanel.add(new JLabel("scaleY:"), createGridBagConstraints(
-				gridX, gridY, gridWidth));
+				gridX, gridY, 1));
+		editBGImagePanel.add(textFieldBGheight, createGridBagConstraints(
+				gridX + 1, gridY, 1));
 		editBGImagePanel.add(textFieldBGscaleY, createGridBagConstraints(
-				gridX + 1, gridY++, gridWidth));
+				gridX + 2, gridY++, 1));
+
 		editBGImagePanel.add(new JLabel("tilt:"), createGridBagConstraints(
-				gridX, gridY, gridWidth));
+				gridX, gridY, 1));
 		editBGImagePanel.add(textFieldBGrotation, createGridBagConstraints(
-				gridX + 1, gridY++, gridWidth));
+				gridX + 1, gridY++, 2));
+
 		editBGImagePanel.add(setBGsettings, createGridBagConstraints(
-				gridX, gridY++, 2));
+				gridX, gridY++, gridWidth));
 
 	}
 
@@ -895,7 +909,11 @@ public class UIPanel extends JPanel {
 
 		textFieldBGposY.setValue(bg.getOffsetY());
 
+		textFieldBGwidth.setValue(bg.getOriginal().getWidth());
+
 		textFieldBGscaleX.setValue(bg.getScaleX());
+
+		textFieldBGheight.setValue(bg.getOriginal().getHeight());
 
 		textFieldBGscaleY.setValue(bg.getScaleY());
 
@@ -1080,7 +1098,7 @@ public class UIPanel extends JPanel {
 		case SELECT:
 			selectEditModeButton(editModePickLineButton);
 			break;
-		case MOVE_BG:
+		case EDIT_BG:
 			selectEditModeButton(editModeBGImage);
 			break;
 		default:

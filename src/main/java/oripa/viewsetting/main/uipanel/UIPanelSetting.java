@@ -190,7 +190,7 @@ public class UIPanelSetting {
 	}
 
 	public void selectEditBGImageMode() {
-		setSelectedMode(EditMode.MOVE_BG);
+		setSelectedMode(EditMode.EDIT_BG);
 	}
 
 	public EditMode getSelectedMode() {
