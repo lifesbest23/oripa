@@ -18,6 +18,7 @@
  */
 package oripa.domain.paint.editbgimage;
 
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import oripa.domain.bgimage.BGImage;
 import oripa.domain.paint.EditMode;
+import oripa.domain.paint.GraphicMouseWheelActionInterface;
 import oripa.domain.paint.PaintContextInterface;
 import oripa.domain.paint.core.GraphicMouseAction;
 
@@ -33,7 +35,8 @@ import oripa.domain.paint.core.GraphicMouseAction;
  * @author lucas
  *
  */
-public class EditBGImageAction extends GraphicMouseAction {
+public class EditBGImageAction extends GraphicMouseAction
+		implements GraphicMouseWheelActionInterface {
 
 	private static final Logger logger = LoggerFactory.getLogger(EditBGImageAction.class);
 
@@ -96,14 +99,48 @@ public class EditBGImageAction extends GraphicMouseAction {
 		draggingPoint = null;
 	}
 
+	private void rotateBGImage(final PaintContextInterface context, final double degree) {
+		logger.info("rotating " + degree);
+		context.getBGImage().rotateImage((int) degree);
+	}
+
+	private void zoomBGImage(final PaintContextInterface context, final double scale) {
+		logger.info("zooming " + scale);
+
+		context.getBGImage().zoomImage((int) scale);
+
+	}
+
 	private void moveBGImage(final PaintContextInterface context) {
 		BGImage bg = context.getBGImage();
 
 		double dx = startPoint.x - draggingPoint.x;
 		double dy = startPoint.y - draggingPoint.y;
 
-		bg.offsetX -= dx;
-		bg.offsetY -= dy;
+		bg.moveImage((int) -dx, (int) -dy);
+	}
+
+	/*
+	 * (non Javadoc)
+	 *
+	 * @see
+	 * oripa.domain.paint.GraphicMouseWheelActionInterface#onWheelMoved(oripa.
+	 * domain.paint.PaintContextInterface, java.awt.geom.AffineTransform,
+	 * java.awt.event.MouseWheelEvent, boolean)
+	 */
+	@Override
+	public void onWheelMoved(final PaintContextInterface context, final AffineTransform affine,
+			final MouseWheelEvent e) {
+
+		if (e.isAltDown() || e.isShiftDown() || e.isControlDown()) {
+			double rotation = e.getWheelRotation();
+			rotateBGImage(context, rotation * 5);
+		} else {
+			// double scale = (100.0 - e.getWheelRotation() * 5) / 100.0;
+
+			double scale = e.getWheelRotation();
+			zoomBGImage(context, scale * 5);
+		}
 	}
 
 }

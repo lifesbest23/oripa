@@ -56,6 +56,7 @@ import oripa.bind.binder.BinderInterface;
 import oripa.bind.binder.ViewChangeBinder;
 import oripa.bind.state.PaintBoundStateFactory;
 import oripa.bind.state.action.PaintActionSetterFactory;
+import oripa.domain.bgimage.BGImage;
 import oripa.domain.cptool.TypeForChange;
 import oripa.domain.creasepattern.CreasePatternInterface;
 import oripa.domain.cutmodel.CutModelOutlinesHolder;
@@ -374,13 +375,13 @@ public class UIPanel extends JPanel {
 	}
 
 	private JFormattedTextField createNumTextField() {
-		NumberFormat bgNumberFormat = NumberFormat
-				.getNumberInstance(Locale.US);
-		bgNumberFormat.setMinimumFractionDigits(6);
+		NumberFormat bgNumberFormat = NumberFormat.getIntegerInstance();
+		// .getNumberInstance(Locale.US);
+		// bgNumberFormat.setMinimumFractionDigits(6);
 
 		JFormattedTextField field = new JFormattedTextField(bgNumberFormat);
 
-		field.setColumns(8);
+		field.setColumns(10);
 		field.setHorizontalAlignment(JTextField.LEFT);
 
 		return field;
@@ -623,6 +624,8 @@ public class UIPanel extends JPanel {
 		textFieldBGscaleY = createNumTextField();
 		textFieldBGrotation = createNumTextField();
 
+		getBGImageValues();
+
 		// put it all together
 		editBGImagePanel.setLayout(new GridBagLayout());
 		editBGImagePanel.setBorder(createTitledBorder("BGImage"));
@@ -830,6 +833,17 @@ public class UIPanel extends JPanel {
 		textFieldAngle.getDocument().addDocumentListener(
 				new AngleValueInputListener(valueSetting));
 
+		showBGImage.addActionListener(e -> {
+			paintContext.getBGImage().setVisible(showBGImage.isSelected());
+			screenUpdater.updateScreen();
+		});
+		textFieldBGposX.addActionListener(e -> setBGImageValues());
+		textFieldBGposY.addActionListener(e -> setBGImageValues());
+		textFieldBGscaleX.addActionListener(e -> setBGImageValues());
+		textFieldBGscaleY.addActionListener(e -> setBGImageValues());
+		textFieldBGrotation.addActionListener(e -> setBGImageValues());
+		setBGsettings.addActionListener(e -> setBGImageValues());
+
 		dispGridCheckBox.addActionListener(e -> {
 			mainScreenSetting.setGridVisible(dispGridCheckBox.isSelected());
 			screenUpdater.updateScreen();
@@ -918,6 +932,60 @@ public class UIPanel extends JPanel {
 			}
 		} catch (Exception ex) {
 			logger.error("failed to get grid division num.", ex);
+		}
+	}
+
+	private void getBGImageValues() {
+		BGImage bg = paintContext.getBGImage();
+		textFieldBGposX.setValue(bg.getOffsetX());
+
+		textFieldBGposY.setValue(bg.getOffsetY());
+
+		textFieldBGscaleX.setValue(bg.getScaleX());
+
+		textFieldBGscaleY.setValue(bg.getScaleY());
+
+		textFieldBGrotation.setValue(bg.getRotation());
+	}
+
+	private void setBGImageValues() {
+		int value;
+		BGImage bg = paintContext.getBGImage();
+
+		try {
+			value = Integer.valueOf(textFieldBGposX.getText());
+			if (value != bg.offsetX) {
+				logger.debug("BG posX " + value);
+				bg.setOffsetX(value);
+			}
+
+			value = Integer.valueOf(textFieldBGposY.getText());
+			if (value != bg.offsetY) {
+				logger.debug("BG posY " + value);
+				bg.setOffsetY(value);
+			}
+
+			value = Integer.valueOf(textFieldBGscaleX.getText());
+			if (value != bg.scaleX) {
+				logger.debug("BG scaleX " + value);
+				bg.setScale(value);
+			}
+
+			value = Integer.valueOf(textFieldBGscaleY.getText());
+			if (value != bg.scaleY) {
+				logger.debug("BG scaleY " + value);
+				bg.setScale(value);
+			}
+
+			value = Integer.valueOf(textFieldBGrotation.getText());
+			if (value != bg.rotation) {
+				logger.debug("BG rotation " + value);
+				bg.setRotation(value);
+			}
+
+			screenUpdater.updateScreen();
+		} catch (Exception ex) {
+			logger.error("failed to get some BGImage value", ex);
 		}
 	}
 
@@ -1044,6 +1112,10 @@ public class UIPanel extends JPanel {
 		setting.addPropertyChangeListener(
 				UIPanelSetting.AUX_BUTTON_ENABLED,
 				e -> lineTypeAuxButton.setEnabled((boolean) e.getNewValue()));
+
+		paintContext.getBGImage().addPropertyChangeListener(BGImage.CHANGED_BGIMAGE, e -> {
+			getBGImageValues();
+		});
 	}
 
 	private void onChangeEditModeButtonSelection(final PropertyChangeEvent e) {

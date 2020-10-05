@@ -19,6 +19,8 @@
 package oripa.domain.bgimage;
 
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,15 +37,25 @@ public class BGImage {
 
 	private static final Logger logger = LoggerFactory.getLogger(BGImage.class);
 
+	private boolean changedValue = false;
+	public static String CHANGED_BGIMAGE = "changed bg image";
+
+	private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
 	private BufferedImage image = null;
+	private BufferedImage imageBuffer = null;
 
 	private String path = null;
 
 	public int offsetX = 0;
 	public int offsetY = 0;
 
-	public int scaleX = -1;
-	public int scaleY = -1;
+	public int scaleX = 1000;
+	public int scaleY = 1000;
+
+	public int rotation = 0;
+
+	private boolean visible = true;
 
 	public BGImage() {
 		/*
@@ -54,8 +66,107 @@ public class BGImage {
 		logger.info("SUCCESS");
 	}
 
-	public BufferedImage getBuffer() {
+	public void addPropertyChangeListener(final String propertyName,
+			final PropertyChangeListener listener) {
+		support.addPropertyChangeListener(propertyName, listener);
+	}
+
+	public void moveImage(final int deltaX, final int deltaY) {
+		offsetX += deltaX;
+		offsetY += deltaY;
+
+		support.firePropertyChange(CHANGED_BGIMAGE, offsetX, deltaX);
+	}
+
+	public void zoomImage(final int scale) {
+		int old = scaleX;
+		scaleX += scale;
+		scaleY += scale;
+		support.firePropertyChange(CHANGED_BGIMAGE, old, scaleX);
+		setValueChanged(true);
+	}
+
+	public void rotateImage(final int delta) {
+		int old = rotation;
+		rotation += delta;
+		support.firePropertyChange(CHANGED_BGIMAGE, old, rotation);
+		setValueChanged(true);
+	}
+
+	public boolean getValueChanged() {
+		return changedValue;
+	}
+
+	public void setValueChanged(final boolean ch) {
+		changedValue = ch;
+	}
+
+	public int getOffsetX() {
+		return offsetX;
+	}
+
+	public int getOffsetY() {
+		return offsetY;
+	}
+
+	public int getScaleX() {
+		return scaleX;
+	}
+
+	public int getScaleY() {
+		return scaleY;
+	}
+
+	public int getRotation() {
+		return rotation;
+	}
+
+	public void setOffsetX(final int x) {
+		int old = offsetX;
+		offsetX = x;
+		support.firePropertyChange(CHANGED_BGIMAGE, old, x);
+	}
+
+	public void setOffsetY(final int y) {
+		int old = offsetY;
+		offsetY = y;
+		support.firePropertyChange(CHANGED_BGIMAGE, old, y);
+	}
+
+	public void setScale(final int sc) {
+		int old = scaleX;
+		scaleX = sc;
+		scaleY = sc;
+		support.firePropertyChange(CHANGED_BGIMAGE, old, sc);
+		setValueChanged(true);
+	}
+
+	public void setRotation(final int rot) {
+		int old = rotation;
+		rotation = rot;
+		support.firePropertyChange(CHANGED_BGIMAGE, old, rot);
+		setValueChanged(true);
+	}
+
+	public boolean getVisible() {
+		return visible;
+	}
+
+	public void setVisible(final boolean vis) {
+		logger.info("setVisible " + vis);
+		visible = vis;
+	}
+
+	public BufferedImage getOriginal() {
 		return image;
+	}
+
+	public BufferedImage getBuffer() {
+		return imageBuffer;
+	}
+
+	public void setBuffer(final BufferedImage im) {
+		imageBuffer = im;
 	}
 
 	public void setImage(final String newPath) {
@@ -68,6 +179,14 @@ public class BGImage {
 
 		try {
 			image = ImageIO.read(new File(path));
+			imageBuffer = image.getSubimage(0, 0, image.getWidth(), image.getHeight());
+
+			scaleX = 1000;
+			scaleY = 1000;
+			offsetX = 0;
+			offsetY = 0;
+			rotation = 0;
+			visible = true;
 		} catch (IOException e) {
 			logger.error("ERROR BGIMAGE setImage");
 			return;

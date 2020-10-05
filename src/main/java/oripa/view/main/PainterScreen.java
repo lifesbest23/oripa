@@ -45,6 +45,7 @@ import oripa.domain.paint.BGImageDrawer;
 import oripa.domain.paint.CreasePatternGraphicDrawer;
 import oripa.domain.paint.EditMode;
 import oripa.domain.paint.GraphicMouseActionInterface;
+import oripa.domain.paint.GraphicMouseWheelActionInterface;
 import oripa.domain.paint.MouseActionHolder;
 import oripa.domain.paint.PaintContextInterface;
 import oripa.util.gui.MouseUtility;
@@ -217,11 +218,6 @@ public class PainterScreen extends JPanel
 		return bufferg;
 	}
 
-	public void drawBackgroundImage(final Graphics2D bufferG2D) {
-		bgDrawer.draw(bufferG2D, paintContext,
-				mouseActionHolder.getMouseAction().getEditMode() == EditMode.VERTEX);
-	}
-
 	// Scaling relative to the center of the screen
 	@Override
 	public void paintComponent(final Graphics g) {
@@ -231,7 +227,8 @@ public class PainterScreen extends JPanel
 		bufferG2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		drawBackgroundImage(bufferG2D);
+		bgDrawer.draw(bufferG2D, paintContext,
+				mouseActionHolder.getMouseAction().getEditMode() == EditMode.VERTEX);
 
 		drawer.draw(bufferG2D, paintContext,
 				mouseActionHolder.getMouseAction().getEditMode() == EditMode.VERTEX);
@@ -418,10 +415,28 @@ public class PainterScreen extends JPanel
 	@Override
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		double rate = (100.0 - e.getWheelRotation() * 5) / 100.0;
-		scale *= rate;
-		paintContext.setScale(scale);
-		updateAffineTransform();
-		repaint();
+
+		final GraphicMouseActionInterface action = mouseActionHolder.getMouseAction();
+		if (action instanceof GraphicMouseWheelActionInterface) {
+			new SwingWorker<Void, Void>() {
+				@Override
+				protected Void doInBackground() throws Exception {
+					((GraphicMouseWheelActionInterface) action).onWheelMoved(paintContext,
+							affineTransform, e);
+					return null;
+				}
+
+				@Override
+				protected void done() {
+					repaint();
+				}
+			}.execute();
+
+		} else {
+			paintContext.setScale(scale);
+			updateAffineTransform();
+			repaint();
+		}
 	}
 
 	@Override
@@ -438,7 +453,6 @@ public class PainterScreen extends JPanel
 		// Updating the image buffer
 		buildBufferImage();
 		repaint();
-
 	}
 
 	@Override
@@ -473,6 +487,5 @@ public class PainterScreen extends JPanel
 					paintContext.setCrossLineVisible(visible);
 					repaint();
 				});
-
 	}
 }

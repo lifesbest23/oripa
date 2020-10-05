@@ -20,7 +20,8 @@ package oripa.domain.paint;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import oripa.domain.bgimage.BGImage;
 
@@ -29,6 +30,35 @@ import oripa.domain.bgimage.BGImage;
  *
  */
 public class BGImageDrawer {
+
+	private BufferedImage cache = null;
+
+	public BufferedImage rotateImageByDegrees(final BufferedImage img, final double angle) {
+
+		double rads = Math.toRadians(angle);
+		double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+		int w = img.getWidth();
+		int h = img.getHeight();
+		int newWidth = (int) Math.floor(w * cos + h * sin);
+		int newHeight = (int) Math.floor(h * cos + w * sin);
+
+		BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = rotated.createGraphics();
+		AffineTransform at = new AffineTransform();
+		at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+
+		int x = w / 2;
+		int y = h / 2;
+
+		at.rotate(rads, x, y);
+		g2d.setTransform(at);
+		g2d.drawImage(img, 0, 0, null);
+		g2d.setColor(Color.RED);
+		g2d.drawRect(0, 0, newWidth - 1, newHeight - 1);
+		g2d.dispose();
+
+		return rotated;
+	}
 
 	/**
 	 * draws crease pattern according to the context of user interaction.
@@ -42,17 +72,35 @@ public class BGImageDrawer {
 			final PaintContextInterface context, final boolean forceShowingVertex) {
 
 		BGImage bg = context.getBGImage();
-		if (bg.getImagePath() == null) {
+		if (bg.getImagePath() == null || !bg.getVisible()) {
 			return;
 		}
 
-		// resize and scale
-		int cpsize = (int) context.getCreasePattern().getPaperSize();
-		Image im = bg.getBuffer().getScaledInstance(cpsize, cpsize, Image.SCALE_SMOOTH);
+		int height = bg.getOriginal().getHeight() * bg.getScaleY() / 1000;
+		int width = bg.getOriginal().getWidth() * bg.getScaleX() / 1000;
 
-		g2d.drawImage(im,
-				-(cpsize / 2) + bg.offsetX,
-				-(cpsize / 2) + bg.offsetY, null);
+		if (cache == null || bg.getValueChanged()) {
+
+			BufferedImage tmp = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+
+			// Draw the image on to the buffered image
+			Graphics2D bGr = tmp.createGraphics();
+			bGr.drawImage(
+					bg.getOriginal().getScaledInstance(width, height,
+							BufferedImage.SCALE_AREA_AVERAGING),
+					0, 0, null);
+			bGr.dispose();
+
+			cache = rotateImageByDegrees(tmp,
+					bg.getRotation());
+
+			bg.setValueChanged(false);
+		}
+
+		g2d.drawImage(cache,
+				-(width / 2) + bg.offsetX,
+				-(height / 2) + bg.offsetY,
+				null);
 
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(-1, -1, 2, 2);

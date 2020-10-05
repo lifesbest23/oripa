@@ -9,7 +9,7 @@ public class PaintContextFactory {
 		CreasePatternFactory patternFactory = new CreasePatternFactory();
 
 		PaintContextInterface context = new PaintContext();
-		context.setBGImage(null);
+		context.setBGImage("/home/lucas/tmp/cp.png");
 		context.setCreasePattern(
 				patternFactory.createCreasePattern(
 						Constants.DEFAULT_PAPER_SIZE));
