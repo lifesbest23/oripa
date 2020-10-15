@@ -33,7 +33,7 @@ public class BGImageDrawer {
 
 	private BufferedImage cache = null;
 
-	public BufferedImage rotateImageByDegrees(final BufferedImage img, final double angle) {
+	private BufferedImage rotateImageByDegrees(final BufferedImage img, final double angle) {
 
 		double rads = Math.toRadians(angle);
 		double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
@@ -61,15 +61,40 @@ public class BGImageDrawer {
 	}
 
 	/**
+	 * update local cached version of rotatetd and scaled image
+	 *
+	 * @param bg
+	 *            BGImage instance used
+	 */
+	public void updateCachedImage(final BGImage bg) {
+		int height = bg.getOriginal().getHeight() * bg.getScaleY() / 1000;
+		int width = bg.getOriginal().getWidth() * bg.getScaleX() / 1000;
+
+		BufferedImage tmp = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+
+		// Draw the image on to the buffered image
+		Graphics2D bGr = tmp.createGraphics();
+		bGr.drawImage(
+				bg.getOriginal().getScaledInstance(width, height,
+						BufferedImage.SCALE_AREA_AVERAGING),
+				0, 0, null);
+		bGr.dispose();
+
+		cache = rotateImageByDegrees(tmp,
+				bg.getRotation());
+
+		bg.setValueChanged(false);
+	}
+
+	/**
 	 * draws crease pattern according to the context of user interaction.
 	 *
 	 * @param g2d
 	 * @param context
-	 * @param forceShowingVertex
 	 */
 	public void draw(
 			final Graphics2D g2d,
-			final PaintContextInterface context, final boolean forceShowingVertex) {
+			final PaintContextInterface context) {
 
 		BGImage bg = context.getBGImage();
 		if (bg.getImagePath() == null || !bg.getVisible()) {
@@ -79,22 +104,8 @@ public class BGImageDrawer {
 		int height = bg.getOriginal().getHeight() * bg.getScaleY() / 1000;
 		int width = bg.getOriginal().getWidth() * bg.getScaleX() / 1000;
 
-		if (cache == null || bg.getValueChanged()) {
-
-			BufferedImage tmp = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-
-			// Draw the image on to the buffered image
-			Graphics2D bGr = tmp.createGraphics();
-			bGr.drawImage(
-					bg.getOriginal().getScaledInstance(width, height,
-							BufferedImage.SCALE_AREA_AVERAGING),
-					0, 0, null);
-			bGr.dispose();
-
-			cache = rotateImageByDegrees(tmp,
-					bg.getRotation());
-
-			bg.setValueChanged(false);
+		if (cache == null) {
+			updateCachedImage(bg);
 		}
 
 		g2d.drawImage(cache,

@@ -40,6 +40,7 @@ import javax.swing.SwingWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import oripa.domain.bgimage.BGImage;
 import oripa.domain.cutmodel.CutModelOutlinesHolder;
 import oripa.domain.paint.BGImageDrawer;
 import oripa.domain.paint.CreasePatternGraphicDrawer;
@@ -95,6 +96,7 @@ public class PainterScreen extends JPanel
 		addMouseWheelListener(this);
 		addComponentListener(this);
 
+		addPropertyChangeListenersToBGImage();
 		addPropertyChangeListenersToSetting();
 
 		scale = 1.5;
@@ -227,8 +229,7 @@ public class PainterScreen extends JPanel
 		bufferG2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		bgDrawer.draw(bufferG2D, paintContext,
-				mouseActionHolder.getMouseAction().getEditMode() == EditMode.VERTEX);
+		bgDrawer.draw(bufferG2D, paintContext);
 
 		drawer.draw(bufferG2D, paintContext,
 				mouseActionHolder.getMouseAction().getEditMode() == EditMode.VERTEX);
@@ -468,6 +469,21 @@ public class PainterScreen extends JPanel
 	@Override
 	public void componentHidden(final ComponentEvent arg0) {
 		// TODO Auto-generated method stub
+	}
+
+	private void addPropertyChangeListenersToBGImage() {
+		paintContext.getBGImage().addPropertyChangeListener(BGImage.CHANGED_BGIMAGE_POSITION,
+				e -> repaint());
+		paintContext.getBGImage().addPropertyChangeListener(BGImage.CHANGED_BGIMAGE_ROTATION,
+				e -> {
+					bgDrawer.updateCachedImage(paintContext.getBGImage());
+					repaint();
+				});
+		paintContext.getBGImage().addPropertyChangeListener(BGImage.CHANGED_BGIMAGE_SCALE,
+				e -> {
+					bgDrawer.updateCachedImage(paintContext.getBGImage());
+					repaint();
+				});
 	}
 
 	private void addPropertyChangeListenersToSetting() {

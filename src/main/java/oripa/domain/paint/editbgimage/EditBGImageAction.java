@@ -44,7 +44,7 @@ public class EditBGImageAction extends GraphicMouseAction
 	private Point2D.Double draggingPoint = null;
 
 	public EditBGImageAction() {
-		setEditMode(EditMode.INPUT);
+		setEditMode(EditMode.EDIT_BG);
 
 		setActionState(new EditBGImage());
 	}
@@ -60,7 +60,6 @@ public class EditBGImageAction extends GraphicMouseAction
 	public void onPress(final PaintContextInterface context, final AffineTransform affine,
 			final boolean differentAction) {
 		startPoint = context.getLogicalMousePoint();
-		logger.info(startPoint.toString());
 	}
 
 	/*
@@ -100,15 +99,11 @@ public class EditBGImageAction extends GraphicMouseAction
 	}
 
 	private void rotateBGImage(final PaintContextInterface context, final double degree) {
-		logger.info("rotating " + degree);
 		context.getBGImage().rotateImage((int) degree);
 	}
 
 	private void zoomBGImage(final PaintContextInterface context, final double scale) {
-		logger.info("zooming " + scale);
-
 		context.getBGImage().zoomImage((int) scale);
-
 	}
 
 	private void moveBGImage(final PaintContextInterface context) {
