@@ -337,7 +337,7 @@ public class UIPanel extends JPanel {
 
 		JFormattedTextField field = new JFormattedTextField(bgNumberFormat);
 
-		field.setColumns(10);
+		field.setColumns(8);
 		field.setHorizontalAlignment(JTextField.LEFT);
 
 		return field;
@@ -925,31 +925,31 @@ public class UIPanel extends JPanel {
 		BGImage bg = paintContext.getBGImage();
 
 		try {
-			value = Integer.valueOf(textFieldBGposX.getText());
+			value = ((Number) textFieldBGposX.getValue()).intValue();
 			if (value != bg.offsetX) {
 				logger.debug("BG posX " + value);
 				bg.setOffsetX(value);
 			}
 
-			value = Integer.valueOf(textFieldBGposY.getText());
+			value = ((Number) textFieldBGposY.getValue()).intValue();
 			if (value != bg.offsetY) {
 				logger.debug("BG posY " + value);
 				bg.setOffsetY(value);
 			}
 
-			value = Integer.valueOf(textFieldBGscaleX.getText());
+			value = ((Number) textFieldBGscaleX.getValue()).intValue();
 			if (value != bg.scaleX) {
 				logger.debug("BG scaleX " + value);
 				bg.setScale(value);
 			}
 
-			value = Integer.valueOf(textFieldBGscaleY.getText());
+			value = ((Number) textFieldBGscaleY.getValue()).intValue();
 			if (value != bg.scaleY) {
 				logger.debug("BG scaleY " + value);
 				bg.setScale(value);
 			}
 
-			value = Integer.valueOf(textFieldBGrotation.getText());
+			value = ((Number) textFieldBGrotation.getValue()).intValue();
 			if (value != bg.rotation) {
 				logger.debug("BG rotation " + value);
 				bg.setRotation(value);
@@ -1085,7 +1085,8 @@ public class UIPanel extends JPanel {
 				UIPanelSetting.AUX_BUTTON_ENABLED,
 				e -> lineTypeAuxButton.setEnabled((boolean) e.getNewValue()));
 
-		paintContext.getBGImage().addPropertyChangeListener(BGImage.CHANGED_BGIMAGE, e -> {
+		// old
+		paintContext.getBGImage().addPropertyChangeListener(BGImage.CHANGED_BGIMAGE_VALUES, e -> {
 			getBGImageValues();
 		});
 	}

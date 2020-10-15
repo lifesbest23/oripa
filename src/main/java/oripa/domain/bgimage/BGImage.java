@@ -38,7 +38,7 @@ public class BGImage {
 	private static final Logger logger = LoggerFactory.getLogger(BGImage.class);
 
 	private boolean changedValue = false;
-	public static String CHANGED_BGIMAGE = "changed bg image";
+	public static String CHANGED_BGIMAGE_VALUES = "changed bg image";
 	public static String CHANGED_BGIMAGE_SCALE = "changed bg image scale";
 	public static String CHANGED_BGIMAGE_POSITION = "changed bg image position";
 	public static String CHANGED_BGIMAGE_ROTATION = "changed bg image rotation";
@@ -79,6 +79,7 @@ public class BGImage {
 		offsetY += deltaY;
 
 		support.firePropertyChange(CHANGED_BGIMAGE_POSITION, offsetX, deltaX);
+		support.firePropertyChange(CHANGED_BGIMAGE_VALUES, offsetX, deltaX);
 	}
 
 	public void zoomImage(final int scale) {
@@ -86,6 +87,7 @@ public class BGImage {
 		scaleX += scale;
 		scaleY += scale;
 		support.firePropertyChange(CHANGED_BGIMAGE_SCALE, old, scaleX);
+		support.firePropertyChange(CHANGED_BGIMAGE_VALUES, old, scaleX);
 		setValueChanged(true);
 	}
 
@@ -93,6 +95,7 @@ public class BGImage {
 		int old = rotation;
 		rotation += delta;
 		support.firePropertyChange(CHANGED_BGIMAGE_ROTATION, old, rotation);
+		support.firePropertyChange(CHANGED_BGIMAGE_VALUES, old, rotation);
 		setValueChanged(true);
 	}
 
@@ -127,27 +130,32 @@ public class BGImage {
 	public void setOffsetX(final int x) {
 		int old = offsetX;
 		offsetX = x;
-		support.firePropertyChange(CHANGED_BGIMAGE, old, x);
+		// support.firePropertyChange(CHANGED_BGIMAGE_VALUES, old, x);
+		support.firePropertyChange(CHANGED_BGIMAGE_POSITION, old, x);
+
 	}
 
 	public void setOffsetY(final int y) {
 		int old = offsetY;
 		offsetY = y;
-		support.firePropertyChange(CHANGED_BGIMAGE, old, y);
+		// support.firePropertyChange(CHANGED_BGIMAGE_VALUES, old, y);
+		support.firePropertyChange(CHANGED_BGIMAGE_POSITION, old, y);
 	}
 
 	public void setScale(final int sc) {
 		int old = scaleX;
 		scaleX = sc;
 		scaleY = sc;
-		support.firePropertyChange(CHANGED_BGIMAGE, old, sc);
+		// support.firePropertyChange(CHANGED_BGIMAGE_VALUES, old, sc);
+		support.firePropertyChange(CHANGED_BGIMAGE_SCALE, old, sc);
 		setValueChanged(true);
 	}
 
 	public void setRotation(final int rot) {
 		int old = rotation;
 		rotation = rot;
-		support.firePropertyChange(CHANGED_BGIMAGE, old, rot);
+		// support.firePropertyChange(CHANGED_BGIMAGE_VALUES, old, rot);
+		support.firePropertyChange(CHANGED_BGIMAGE_ROTATION, old, rot);
 		setValueChanged(true);
 	}
 
